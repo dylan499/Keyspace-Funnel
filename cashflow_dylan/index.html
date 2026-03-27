@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Rooming House Investment Blueprint — @cashflow.dylan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #1a1a1a;
+      --white:   #ffffff;
+      --offwhite:#fafafa;
+      --bg:      #f5f5f5;
+      --border:  #e0e0e0;
+      --text:    #333333;
+      --muted:   #777777;
+      --light:   #ececec;
+      --font-h:  'League Spartan', Arial, sans-serif;
+      --font-b:  'Merriweather', Georgia, serif;
+      --font-ui: Arial, Helvetica, sans-serif;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font-b);
+      font-size: 10pt;
+      line-height: 1.75;
+      color: var(--text);
+      background: #d0d0d0;
+    }
+
+    img { max-width: 100%; display: block; }
+
+    /* ── Wordmark (replaces logo image) ────────────── */
+    .wordmark {
+      font-family: var(--font-h);
+      font-size: 9pt;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .wordmark-light { color: rgba(255,255,255,0.65); }
+    .wordmark-dark  { color: var(--black); }
+
+    /* ── Download button (screen only) ────────────── */
+    .download-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--black);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 100;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+    }
+
+    .download-bar span {
+      font-family: var(--font-h);
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .btn-download {
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--font-h);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      padding: 12px 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.15s ease;
+    }
+    .btn-download:hover { opacity: 0.85; }
+    .btn-download svg { width: 16px; height: 16px; }
+
+    /* ── A4 Pages ──────────────────────────────────── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      background: var(--white);
+      margin: 20px auto;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+    }
+
+    /* ── COVER PAGE ────────────────────────────────── */
+    .cover {
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      height: 297mm;
+    }
+
+    .cover-top {
+      padding: 14mm 16mm 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cover-tag {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .cover-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 16mm 14mm;
+    }
+
+    .cover-eyebrow {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 10mm;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cover-eyebrow::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1.5px;
+      background: rgba(255,255,255,0.4);
+    }
+
+    .cover-title {
+      font-family: var(--font-h);
+      font-size: 38pt;
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 8mm;
+    }
+
+    .cover-title em {
+      font-style: normal;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .cover-sub {
+      font-family: var(--font-ui);
+      font-size: 10pt;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      max-width: 120mm;
+      margin-bottom: 14mm;
+    }
+
+    .cover-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin-bottom: 8mm;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 12mm;
+    }
+
+    .cover-meta-item {}
+    .cover-meta-item .label {
+      font-family: var(--font-h);
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 1mm;
+    }
+    .cover-meta-item .value {
+      font-family: var(--font-h);
+      font-size: 10pt;
+      font-weight: 700;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* ── Inner pages ───────────────────────────────── */
+    .page-inner {
+      padding: 16mm 16mm 20mm;
+      min-height: 297mm;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Page header */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 5mm;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 10mm;
+    }
+
+    .page-header-right {
+      font-family: var(--font-h);
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* Page footer */
+    .page-footer {
+      margin-top: auto;
+      padding-top: 5mm;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .page-footer-text {
+      font-family: var(--font-ui);
+      font-size: 7pt;
+      color: var(--muted);
+    }
+
+    .page-num {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    /* Chapter label */
+    .chapter-label {
+      font-family: var(--font-h);
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3mm;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chapter-label::before {
+      content: '';
+      display: block;
+      width: 14px;
+      height: 1.5px;
+      background: var(--muted);
+    }
+
+    /* Chapter heading */
+    .chapter-h1 {
+      font-family: var(--font-h);
+      font-size: 24pt;
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      color: var(--black);
+      margin-bottom: 7mm;
+    }
+
+    .chapter-h2 {
+      font-family: var(--font-h);
+      font-size: 14pt;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+      color: var(--black);
+      margin-bottom: 4mm;
+      margin-top: 7mm;
+    }
+
+    .chapter-h3 {
+      font-family: var(--font-h);
+      font-size: 10pt;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 2mm;
+      margin-top: 5mm;
+    }
+
+    /* Body text */
+    p { margin-bottom: 4mm; font-size: 9.5pt; line-height: 1.75; }
+    p:last-child { margin-bottom: 0; }
+
+    /* Lead / intro paragraph */
+    .lead {
+      font-size: 11pt;
+      line-height: 1.65;
+      color: var(--text);
+      margin-bottom: 7mm;
+      font-weight: 300;
+    }
+
+    /* Callout box */
+    .callout {
+      background: var(--black);
+      border-radius: 4px;
+      padding: 6mm 7mm;
+      margin: 6mm 0;
+    }
+    .callout p {
+      font-family: var(--font-h);
+      font-size: 10pt;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.5;
+      margin: 0;
+      font-style: normal;
+    }
+    .callout-label {
+      font-family: var(--font-h);
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 2mm;
+    }
+
+    /* Stat boxes */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4mm;
+      margin: 6mm 0;
+    }
+
+    .stat-box {
+      background: var(--bg);
+      border-radius: 4px;
+      padding: 5mm;
+      text-align: center;
+    }
+
+    .stat-box .num {
+      font-family: var(--font-h);
+      font-size: 22pt;
+      font-weight: 900;
+      color: var(--black);
+      line-height: 1;
+      margin-bottom: 1mm;
+    }
+
+    .stat-box .lbl {
+      font-family: var(--font-ui);
+      font-size: 7.5pt;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* Comparison table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6mm 0;
+      font-size: 8.5pt;
+    }
+
+    .compare-table th {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3mm 4mm;
+      text-align: left;
+      border-bottom: 2px solid var(--black);
+      color: var(--black);
+    }
+
+    .compare-table th.highlight { background: var(--black); color: var(--white); }
+
+    .compare-table td {
+      padding: 3mm 4mm;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-ui);
+      color: var(--text);
+      vertical-align: top;
+    }
+
+    .compare-table td.highlight {
+      background: var(--bg);
+      font-weight: 700;
+      font-family: var(--font-h);
+      color: var(--black);
+    }
+
+    .compare-table tr:last-child td { border-bottom: none; }
+
+    /* Checklist */
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5mm;
+      margin: 5mm 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 3mm;
+      font-family: var(--font-ui);
+      font-size: 9pt;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .checklist li::before {
+      content: '✓';
+      font-family: var(--font-h);
+      font-size: 9pt;
+      font-weight: 800;
+      color: var(--black);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Number list */
+    .numlist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4mm;
+      margin: 5mm 0;
+    }
+
+    .numlist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 4mm;
+    }
+
+    .numlist-num {
+      width: 22px;
+      height: 22px;
+      background: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 800;
+      color: var(--white);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .numlist-text {
+      font-family: var(--font-ui);
+      font-size: 9pt;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .numlist-text strong {
+      font-family: var(--font-h);
+      font-weight: 700;
+      color: var(--black);
+      display: block;
+      margin-bottom: 1px;
+    }
+
+    /* Pull quote */
+    .pull-quote {
+      border-left: 3px solid var(--black);
+      padding: 3mm 0 3mm 6mm;
+      margin: 7mm 0;
+    }
+
+    .pull-quote p {
+      font-family: var(--font-h);
+      font-size: 12pt;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.3;
+      font-style: normal;
+      margin: 0;
+    }
+
+    /* Info row (2-col) */
+    .info-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5mm;
+      margin: 5mm 0;
+    }
+
+    .info-box {
+      background: var(--bg);
+      border-radius: 4px;
+      padding: 5mm;
+    }
+
+    .info-box h4 {
+      font-family: var(--font-h);
+      font-size: 9pt;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 2mm;
+    }
+
+    .info-box p {
+      font-family: var(--font-ui);
+      font-size: 8.5pt;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Stage process */
+    .stage-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin: 6mm 0;
+    }
+
+    .stage {
+      flex: 1;
+      text-align: center;
+      padding: 4mm 2mm;
+      background: var(--bg);
+      border-right: 1px solid var(--border);
+      position: relative;
+    }
+    .stage:last-child { border-right: none; }
+
+    .stage-num {
+      font-family: var(--font-h);
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1mm;
+    }
+
+    .stage-name {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1.2;
+    }
+
+    /* CTA page */
+    .cta-page {
+      background: var(--black);
+      height: 297mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 16mm;
+    }
+
+    .cta-page .cta-eyebrow {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 8mm;
+    }
+
+    .cta-page h2 {
+      font-family: var(--font-h);
+      font-size: 30pt;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      margin-bottom: 6mm;
+    }
+
+    .cta-page p {
+      font-family: var(--font-ui);
+      font-size: 10pt;
+      color: rgba(255,255,255,0.55);
+      max-width: 120mm;
+      line-height: 1.65;
+      margin-bottom: 10mm;
+    }
+
+    .cta-url {
+      font-family: var(--font-h);
+      font-size: 13pt;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      padding: 4mm 10mm;
+      margin-bottom: 12mm;
+    }
+
+    .cta-divider {
+      width: 40mm;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin: 0 auto 10mm;
+    }
+
+    .cta-contact {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 600;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.06em;
+    }
+
+    .cta-wordmark {
+      font-family: var(--font-h);
+      font-size: 10pt;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-top: 16mm;
+    }
+
+    /* Disclaimer */
+    .disclaimer {
+      background: var(--bg);
+      border-radius: 4px;
+      padding: 4mm 5mm;
+      margin-top: 6mm;
+    }
+    .disclaimer p {
+      font-family: var(--font-ui);
+      font-size: 7pt;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* ── PRINT STYLES ──────────────────────────────── */
+    @media print {
+      body { background: white; }
+
+      .download-bar { display: none !important; }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+      }
+
+      .page:last-child { page-break-after: auto; }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    }
+
+    /* ── Mobile screen view ────────────────────────── */
+    @media screen and (max-width: 800px) {
+      body { background: #e0e0e0; }
+      .page { width: 100%; min-height: auto; margin: 0 0 12px; box-shadow: none; }
+      .cover { height: auto; min-height: 100vw; }
+      .page-inner { padding: 10mm; min-height: auto; }
+      .cta-page { height: auto; padding: 12mm; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+      .info-row { grid-template-columns: 1fr; }
+      .stage-row { flex-wrap: wrap; }
+      .stage { flex: 1 0 30%; }
+      .download-bar { position: fixed; }
+      .compare-table { font-size: 7.5pt; }
+      .compare-table th, .compare-table td { padding: 2mm 3mm; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- DOWNLOAD BAR (screen only)                        -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="download-bar">
+  <span>Your free blueprint is ready</span>
+  <button class="btn-download" onclick="window.print()">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 2v9M4 7l4 4 4-4"/>
+      <path d="M2 13h12"/>
+    </svg>
+    Save as PDF
+  </button>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE 1 — COVER                                    -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cover">
+    <div class="cover-top">
+      <span class="wordmark wordmark-light">@cashflow.dylan</span>
+      <span class="cover-tag">Investor Resource · 2025 Edition</span>
+    </div>
+    <div class="cover-body">
+      <div class="cover-eyebrow">The Definitive Guide</div>
+      <div class="cover-title">
+        The Rooming<br/>House<br/>Investment<br/><em>Blueprint.</em>
+      </div>
+      <p class="cover-sub">
+        Everything Australian investors need to know to build a high-yield, cash-flowing property portfolio — from land to lease. Written by Dylan Adams, Victorian property investor with 50+ rooming house projects.
+      </p>
+      <div class="cover-divider"></div>
+      <div class="cover-meta">
+        <div class="cover-meta-item">
+          <div class="label">Written by</div>
+          <div class="value">Dylan Adams</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="label">Projects Worked</div>
+          <div class="value">50+</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="label">Based in</div>
+          <div class="value">Victoria, AUS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE 2 — INTRODUCTION                             -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflow.dylan</span>
+      <span class="page-header-right">The Rooming House Investment Blueprint</span>
+    </div>
+
+    <div class="chapter-label">Introduction</div>
+    <h1 class="chapter-h1">I spent years watching<br/>investors leave money<br/>on the table.</h1>
+
+    <p class="lead">When I first got into property, I did what everyone does. Buy a house, find a tenant, wait. It works — just slowly, and not particularly well.</p>
+
+    <p>It took me a while to figure out what the smartest investors I was meeting actually did differently. They weren't buying in better suburbs or timing the market. They were using a completely different structure on the same kind of land — and generating two to three times the income as a result. That structure is rooming house investment, and once you understand the numbers, it's hard to look at standard residential rentals the same way.</p>
+
+    <p>I've worked on more than 50 rooming house projects across Victoria — end to end, from land acquisition through to tenant management. I've seen what works, what blows up, and what most investors get wrong before they even start. That's what this guide is built on.</p>
+
+    <div class="callout">
+      <div class="callout-label">Who this guide is for</div>
+      <p>This is for Australian investors who are serious about building a property portfolio that actually generates cash flow — not just paper growth on your annual statement. Whether you're buying your first investment or already hold a few properties, what's in here will change the way you think about yield.</p>
+    </div>
+
+    <h2 class="chapter-h2">What you'll learn in this blueprint</h2>
+
+    <ul class="checklist">
+      <li>What rooming house investment is and why the numbers are so compelling</li>
+      <li>How rooming houses compare to standard residential rentals — side by side</li>
+      <li>The compliance landscape across Australian states (and why it actually works in your favour)</li>
+      <li>How to identify and secure the right land for development</li>
+      <li>Finance strategies most investors — and most brokers — don't know about</li>
+      <li>What the build process actually looks like from start to finish</li>
+      <li>How to structure property management for maximum yield and minimum headaches</li>
+      <li>What to do if you want to explore this model for yourself</li>
+    </ul>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflow.dylan on Instagram</span>
+      <span class="page-num">2</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE 3 — CHAPTER 1                                -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflow.dylan</span>
+      <span class="page-header-right">Chapter 1 — What Is Rooming House Investment?</span>
+    </div>
+
+    <div class="chapter-label">Chapter 01</div>
+    <h1 class="chapter-h1">What is a rooming<br/>house investment?</h1>
+
+    <p class="lead">Here's the simplest way I explain it: it's a single residential dwelling with multiple private rooms, each leased separately to individual tenants.</p>
+
+    <p>Instead of one household under one lease paying you one rent — you've got five to nine separate tenants, each with their own tenancy agreement, each paying their own rent. Same block of land. Same rates bill. Dramatically different income. That's the core of why I think this model is one of the most efficient ways to build a property portfolio in Australia right now.</p>
+
+    <p>What most investors miss is that a rooming house functions less like a traditional rental and more like a small hospitality business. You're running a high-occupancy asset with multiple income streams — which changes everything about how risk and yield actually work.</p>
+
+    <div class="pull-quote">
+      <p>"Multiple income streams. One title. One set of land costs. That's the rooming house advantage."</p>
+    </div>
+
+    <h2 class="chapter-h2">How rooming houses compare to other property types</h2>
+
+    <div class="info-row">
+      <div class="info-box">
+        <h4>Standard Residential Rental</h4>
+        <p>One household. One lease. One income stream. Full vacancy = zero income. Yield typically 3–5% gross on current values.</p>
+      </div>
+      <div class="info-box">
+        <h4>Rooming House</h4>
+        <p>5–9 rooms. 5–9 leases. 5–9 income streams. One vacancy = still 85–95% occupancy. Yield typically 10–16% gross.</p>
+      </div>
+      <div class="info-box">
+        <h4>Short-Term Rental (Airbnb)</h4>
+        <p>High gross potential but heavily management-intensive, platform-dependent, and increasingly regulated across Australia.</p>
+      </div>
+      <div class="info-box">
+        <h4>Commercial Property</h4>
+        <p>Higher entry cost and more complex leasing. Tenant vacancies can last months. Requires significantly more capital.</p>
+      </div>
+    </div>
+
+    <h2 class="chapter-h2">The three reasons I keep coming back to this model</h2>
+
+    <ul class="numlist">
+      <li>
+        <div class="numlist-num">1</div>
+        <div class="numlist-text"><strong>Yield</strong>In my experience, a rooming house on the same land as a standard rental generates two to four times the weekly income. That's not a marginal improvement. It changes the cash flow maths from day one — and what's possible with your next investment after it.</div>
+      </li>
+      <li>
+        <div class="numlist-num">2</div>
+        <div class="numlist-text"><strong>Resilience</strong>One vacancy in a standard rental costs you 100% of your income. One vacancy in a rooming house costs you around 12–20%. I've seen investors go through rough tenant periods and still comfortably service their debt because the other rooms kept paying. That resilience is underrated.</div>
+      </li>
+      <li>
+        <div class="numlist-num">3</div>
+        <div class="numlist-text"><strong>Demand</strong>Australia's rental market has record-low vacancy and a growing number of single-person households. Rooming houses serve exactly the demographic most underserved right now — working singles and couples who need affordable, quality accommodation and can't find it. The demand side of this equation is not going away.</div>
+      </li>
+    </ul>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflow.dylan on Instagram</span>
+      <span class="page-num">3</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE 4 — CHAPTER 2 (THE NUMBERS)                  -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflow.dylan</span>
+      <span class="page-header-right">Chapter 2 — The Numbers</span>
+    </div>
+
+    <div class="chapter-label">Chapter 02</div>
+    <h1 class="chapter-h1">The numbers that<br/>change everything.</h1>
+
+    <p class="lead">I've run these comparisons more times than I can count. The yield difference between a standard rental and a rooming house isn't incremental. It's transformational.</p>
+
+    <p>Here's a real side-by-side. Same kind of land. Same Victorian suburb. Dramatically different outcomes depending on which structure you choose.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Standard 4BR Rental</th>
+          <th class="highlight">9-Room Rooming House</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Total Project Cost</td>
+          <td>~$650,000</td>
+          <td class="highlight">~$1,174,000</td>
+        </tr>
+        <tr>
+          <td>Weekly Rental Income</td>
+          <td>$480 – $550/week</td>
+          <td class="highlight">$3,150/week</td>
+        </tr>
+        <tr>
+          <td>Annual Gross Income</td>
+          <td>~$26,000/year</td>
+          <td class="highlight">$163,800/year</td>
+        </tr>
+        <tr>
+          <td>Gross Yield</td>
+          <td>~4.0%</td>
+          <td class="highlight">~13.9%</td>
+        </tr>
+        <tr>
+          <td>Annual Cash Flow (after all costs)</td>
+          <td>Negative / breakeven</td>
+          <td class="highlight">+$63,154/year</td>
+        </tr>
+        <tr>
+          <td>Vacancy Impact</td>
+          <td>100% income loss</td>
+          <td class="highlight">~11% income reduction</td>
+        </tr>
+        <tr>
+          <td>Equity on Completion</td>
+          <td>Nil (purchase price)</td>
+          <td class="highlight">$961,600</td>
+        </tr>
+        <tr>
+          <td>Tenancy Agreements</td>
+          <td>1</td>
+          <td class="highlight">9</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-label">A project I worked on — 43 Bellbird Avenue, Norlane VIC</div>
+      <p>9 rooms · $350/room/week · $3,150/week gross · $63,154/year positive cash flow · Valued at $1,900,000 on completion · $961,600 equity created. The full breakdown is on the next page.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="num">$961k</div>
+        <div class="lbl">Equity created on completion — real project, Norlane VIC</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">13.9%</div>
+        <div class="lbl">Gross yield on total project cost</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">$1,214</div>
+        <div class="lbl">Weekly positive cash flow after all costs and loan repayments</div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <p>Figures based on 43 Bellbird Avenue, Norlane VIC — a completed project I worked on. Past performance is indicative only. Individual returns depend on location, configuration, market conditions, and finance structure. This guide is for general educational purposes and does not constitute financial advice. Always speak to a licensed financial adviser before making investment decisions.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflow.dylan on Instagram</span>
+      <span class="page-num">4</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE 5 — REAL CASE STUDY                          -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflow.dylan</span>
+      <span class="page-header-right">Real Project Case Study</span>
+    </div>
+
+    <div class="chapter-label">Real Project · Norlane, Victoria</div>
+    <h1 class="chapter-h1">43 Bellbird Avenue,<br/>Norlane VIC 3214.</h1>
+
+    <p class="lead">This is a project I worked on — every dollar in, every dollar out, and the actual result on completion. No embellishments.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="num">9</div>
+        <div class="lbl">Rooms at $350/week each</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">$3,150</div>
+        <div class="lbl">Weekly gross rental income</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">$1.9M</div>
+        <div class="lbl">Valuation on completion</div>
+      </div>
+    </div>
+
+    <h2 class="chapter-h2">Full project financials</h2>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th class="highlight" style="text-align:right;">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="2" style="font-family:var(--font-h);font-weight:700;font-size:8pt;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:4mm;">A. Land &amp; Acquisition Costs</td></tr>
+        <tr><td>Land Purchase Price</td><td class="highlight" style="text-align:right;">$350,000</td></tr>
+        <tr><td>Stamp Duty</td><td class="highlight" style="text-align:right;">$16,070</td></tr>
+        <tr><td>Conveyancing &amp; Legal</td><td class="highlight" style="text-align:right;">$3,000</td></tr>
+        <tr><td>Valuation Fees</td><td class="highlight" style="text-align:right;">$5,000</td></tr>
+        <tr><td><strong>Total Acquisition</strong></td><td class="highlight" style="text-align:right;font-weight:700;">$374,070</td></tr>
+
+        <tr><td colspan="2" style="font-family:var(--font-h);font-weight:700;font-size:8pt;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:4mm;">B. Construction Costs</td></tr>
+        <tr><td>Base Build Contract</td><td class="highlight" style="text-align:right;">$780,000</td></tr>
+        <tr><td>Furniture Package (inc. in build)</td><td class="highlight" style="text-align:right;">$30,000</td></tr>
+        <tr><td>Landscaping &amp; Connections (inc.)</td><td class="highlight" style="text-align:right;">$0</td></tr>
+        <tr><td><strong>Total Construction</strong></td><td class="highlight" style="text-align:right;font-weight:700;">$810,000</td></tr>
+
+        <tr><td colspan="2" style="font-family:var(--font-h);font-weight:700;font-size:8pt;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:4mm;">C. Annual Income &amp; Expenses</td></tr>
+        <tr><td>Gross Annual Rent (9 × $350 × 52)</td><td class="highlight" style="text-align:right;">$163,800</td></tr>
+        <tr><td>Property Management (10%)</td><td class="highlight" style="text-align:right;">−$16,380</td></tr>
+        <tr><td>Council Rates</td><td class="highlight" style="text-align:right;">−$2,500</td></tr>
+        <tr><td>Power, Water &amp; Internet</td><td class="highlight" style="text-align:right;">−$6,440</td></tr>
+        <tr><td>Insurance</td><td class="highlight" style="text-align:right;">−$5,000</td></tr>
+        <tr><td>Waste &amp; Maintenance</td><td class="highlight" style="text-align:right;">−$3,700</td></tr>
+        <tr><td>Net Operating Income (NOI)</td><td class="highlight" style="text-align:right;font-weight:700;">$129,780</td></tr>
+        <tr><td>Annual Loan Repayments (7.1% on $938,400)</td><td class="highlight" style="text-align:right;">−$66,626</td></tr>
+        <tr><td><strong>Annual Cash Flow (profit)</strong></td><td class="highlight" style="text-align:right;font-weight:800;font-size:11pt;">+$63,154</td></tr>
+
+        <tr><td colspan="2" style="font-family:var(--font-h);font-weight:700;font-size:8pt;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:4mm;">D. Equity Position on Completion</td></tr>
+        <tr><td>Valuation on Completion</td><td class="highlight" style="text-align:right;">$1,900,000</td></tr>
+        <tr><td>Total Loan Outstanding</td><td class="highlight" style="text-align:right;">−$938,400</td></tr>
+        <tr><td><strong>Equity on Completion</strong></td><td class="highlight" style="text-align:right;font-weight:800;font-size:11pt;">$961,600</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-label">The bottom line</div>
+      <p>The investor on this project put in $251,500 of their own capital. On completion they held $961,600 in equity and a property generating $63,154/year — that's $1,214 a week in positive cash flow after every cost including loan repayments. Cash-on-cash return of over 25%, with equity built in from day one.</p>
+    </div>
+
+    <div class="disclaimer">
+      <p>Figures are based on actual project data for 43 Bellbird Avenue, Norlane VIC. Returns are specific to this project and location. Past performance does not guarantee future results. This is not financial advice.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflow.dylan on Instagram</span>
+      <span class="page-num">5</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE 6 — CHAPTER 3 (COMPLIANCE)                   -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflow.dylan</span>
+      <span class="page-header-right">Chapter 3 — Compliance & Legislation</span>
+    </div>
+
+    <div class="chapter-label">Chapter 03</div>
+    <h1 class="chapter-h1">Compliance is the<br/>moat, not the obstacle.</h1>
+
+    <p class="lead">Most investors hear "compliance requirements" and their eyes glaze over. Here's what most investors miss: the red tape is actually protecting you.</p>
+
+    <p>Rooming houses are regulated — and that's a feature, not a bug. Every state has requirements around room size, fire safety, registration, and ongoing inspections. These create a genuine barrier to entry. The people who understand this stuff operate legally, attract better tenants, and protect their asset long-term. The people who don't either can't get started, or they get started wrong and pay for it later.</p>
+
+    <p>In my experience, compliance is one of the things investors most underestimate going in. But once you know the rules, it's not complicated — it's just a checklist you build into your process from day one.</p>
+
+    <h2 class="chapter-h2">State-by-state overview</h2>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>State</th>
+          <th>Registration Body</th>
+          <th>Key Requirements</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Victoria</strong></td>
+          <td>Consumer Affairs VIC</td>
+          <td>Registration required for 4+ residents. Min room size 7.5m². Annual inspection regime.</td>
+        </tr>
+        <tr>
+          <td><strong>Queensland</strong></td>
+          <td>RTRA / Local Council</td>
+          <td>Governed under Residential Tenancies Act. Council DA required for rooming accommodation use.</td>
+        </tr>
+        <tr>
+          <td><strong>NSW</strong></td>
+          <td>Fair Trading NSW</td>
+          <td>Regulated under Boarding Houses Act 2012. Registration for 5+ residents. Regular inspections.</td>
+        </tr>
+        <tr>
+          <td><strong>South Australia</strong></td>
+          <td>SA Housing Authority</td>
+          <td>Class 1b building classification. Council planning approval required.</td>
+        </tr>
+        <tr>
+          <td><strong>Western Australia</strong></td>
+          <td>Local Council</td>
+          <td>Building permit under Class 1b. Varies significantly by local government area.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 class="chapter-h2">What compliance actually involves</h2>
+
+    <ul class="numlist">
+      <li>
+        <div class="numlist-num">1</div>
+        <div class="numlist-text"><strong>Planning & DA approval</strong>Working with council to get development approval for the intended use. What most investors miss: not every block is suitable, and not every council is accommodating. Knowing which LGAs have approval history for rooming accommodation is half the battle.</div>
+      </li>
+      <li>
+        <div class="numlist-num">2</div>
+        <div class="numlist-text"><strong>Building standards</strong>The build must meet Class 1b requirements — fire separation, emergency lighting, smoke detectors, minimum room dimensions. These aren't optional extras. They're the reason your property can legally operate.</div>
+      </li>
+      <li>
+        <div class="numlist-num">3</div>
+        <div class="numlist-text"><strong>Registration & ongoing compliance</strong>In most states the property needs to be registered and periodically inspected. For a compliant build, this is straightforward. For a property that cut corners, it's a nightmare. Design compliance in — don't retrofit it.</div>
+      </li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-label">What I've seen go wrong</div>
+      <p>The most common mistake I see is investors choosing a site without checking council's history on rooming accommodation DAs. A site that looks perfect on paper can become an 18-month headache if the local council is unsympathetic. Do that research before you buy.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflow.dylan on Instagram</span>
+      <span class="page-num">6</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE 7 — CHAPTER 4 & 5 (LAND + FINANCE)           -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflow.dylan</span>
+      <span class="page-header-right">Chapter 4 & 5 — Land & Finance</span>
+    </div>
+
+    <div class="chapter-label">Chapter 04</div>
+    <h1 class="chapter-h1">Finding the right land.</h1>
+
+    <p class="lead">The land decision is the most consequential call in this whole process. I've seen well-capitalised, well-intentioned investors struggle because they picked the wrong site.</p>
+
+    <p>Not every block works for rooming house development. You need to think across planning, zoning, infrastructure, and market demand simultaneously — and the best sites are rarely sitting on realestate.com.au waiting for you. What most investors miss is that off-market access is almost always how the best land gets secured.</p>
+
+    <h2 class="chapter-h2">What makes a site viable</h2>
+
+    <ul class="checklist">
+      <li>Zoned residential (R2/R3 or equivalent) with council approval history for rooming accommodation</li>
+      <li>Minimum 600–700m² with appropriate frontage for access and parking</li>
+      <li>Located within 1km of public transport, shops, and employment hubs</li>
+      <li>In a suburb with demonstrable demand for single-occupancy rental accommodation</li>
+      <li>Priced to allow construction of a compliant 6–9 room dwelling within total budget</li>
+      <li>Free from easements, flood overlay, or heritage constraints that limit development</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-label">My honest take on land sourcing</div>
+      <p>The investors I see get the best results are rarely buying on-market. They're working networks built from years in the space — agents who call them first, contacts who know what's coming before it lists. That sourcing advantage is worth more than any negotiation tactic once you're in a competitive market.</p>
+    </div>
+
+    <div class="chapter-label" style="margin-top: 8mm;">Chapter 05</div>
+    <h1 class="chapter-h1" style="font-size: 20pt;">Finance strategies most<br/>investors miss.</h1>
+
+    <p>The finance structure on a rooming house project is fundamentally different from a standard purchase — and most brokers aren't across it. In my experience, the right broker adds hundreds of thousands of dollars in borrowing capacity and meaningfully reduces your out-of-pocket exposure at entry.</p>
+
+    <div class="info-row">
+      <div class="info-box">
+        <h4>Construction Loan</h4>
+        <p>Interest-only during the build phase. Drawn progressively as construction milestones are met. Converts to standard loan at completion.</p>
+      </div>
+      <div class="info-box">
+        <h4>Equity Release</h4>
+        <p>Existing property equity can fund the land deposit and early-stage costs, reducing the cash required at entry significantly.</p>
+      </div>
+      <div class="info-box">
+        <h4>SMSF Investment</h4>
+        <p>Rooming houses can be held within an SMSF under certain structures. High yield makes them particularly attractive in this vehicle.</p>
+      </div>
+      <div class="info-box">
+        <h4>Joint Ventures</h4>
+        <p>Co-investing with a partner or family member to share capital requirements and risk while splitting the income and equity upside.</p>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflow.dylan on Instagram</span>
+      <span class="page-num">7</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE 8 — CHAPTER 6 & 7 (BUILD + MANAGEMENT)       -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflow.dylan</span>
+      <span class="page-header-right">Chapter 6 & 7 — Build & Management</span>
+    </div>
+
+    <div class="chapter-label">Chapter 06</div>
+    <h1 class="chapter-h1">The build process,<br/>demystified.</h1>
+
+    <p class="lead">A rooming house development typically takes 12–18 months from land settlement to first tenant. Here's what actually happens at each stage — without the fluff.</p>
+
+    <div class="stage-row">
+      <div class="stage"><div class="stage-num">01</div><div class="stage-name">Site Selection</div></div>
+      <div class="stage"><div class="stage-num">02</div><div class="stage-name">Finance</div></div>
+      <div class="stage"><div class="stage-num">03</div><div class="stage-name">DA Lodgement</div></div>
+      <div class="stage"><div class="stage-num">04</div><div class="stage-name">Design</div></div>
+      <div class="stage"><div class="stage-num">05</div><div class="stage-name">Tender</div></div>
+      <div class="stage"><div class="stage-num">06</div><div class="stage-name">Contracts</div></div>
+      <div class="stage"><div class="stage-num">07</div><div class="stage-name">Construction</div></div>
+      <div class="stage"><div class="stage-num">08</div><div class="stage-name">Registration</div></div>
+      <div class="stage"><div class="stage-num">09</div><div class="stage-name">Cash Flow</div></div>
+    </div>
+
+    <ul class="numlist">
+      <li><div class="numlist-num">1</div><div class="numlist-text"><strong>DA & approvals (2–4 months)</strong>Development application lodged with council. Response times vary by LGA — this is one of the most unpredictable stages, and also where having prior council relationships pays off. Get this right before you commit capital to a site.</div></li>
+      <li><div class="numlist-num">2</div><div class="numlist-text"><strong>Design & tender (1–2 months)</strong>Architectural plans finalised to Class 1b standard. Building contract tendered to builders with actual rooming house experience — not just any residential builder. This distinction matters more than most investors realise.</div></li>
+      <li><div class="numlist-num">3</div><div class="numlist-text"><strong>Construction (6–10 months)</strong>Progressive draw-downs from your construction loan as each stage is certified. Site inspections at every milestone are non-negotiable. Quality issues caught early cost far less than defects discovered at handover.</div></li>
+      <li><div class="numlist-num">4</div><div class="numlist-text"><strong>Completion & registration (1 month)</strong>Occupancy certificate obtained, property registered with the relevant state authority, management activated, tenant sourcing begins. When all the prior stages were done correctly, this part is the easy bit.</div></li>
+    </ul>
+
+    <div class="chapter-label" style="margin-top: 8mm;">Chapter 07</div>
+    <h1 class="chapter-h1" style="font-size: 20pt;">Property management<br/>that actually works.</h1>
+
+    <p>Rooming house management is more intensive than standard residential — I won't pretend otherwise. But when it's done correctly, it's the engine that makes the whole strategy deliver. The biggest mistake I see is investors handing their asset to a generalist property manager who has no idea how to run a multi-tenancy property.</p>
+
+    <ul class="checklist">
+      <li>Individual tenancy agreements for each room — reducing legal complexity and risk</li>
+      <li>Weekly rent collection with automated arrears management</li>
+      <li>Proactive maintenance scheduling to protect asset condition</li>
+      <li>Ongoing compliance monitoring — inspections, fire safety, registrations</li>
+      <li>Occupancy optimisation — keeping rooms filled with quality tenants</li>
+    </ul>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflow.dylan on Instagram</span>
+      <span class="page-num">8</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE 9 — WHAT TO DO NEXT                          -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflow.dylan</span>
+      <span class="page-header-right">What To Do Next</span>
+    </div>
+
+    <div class="chapter-label">Closing</div>
+    <h1 class="chapter-h1">What to do next.</h1>
+
+    <p class="lead">Rooming house investment is one of the highest-yielding, most resilient property strategies available to Australian investors right now — and most people have never heard of it.</p>
+
+    <p>The numbers in this guide are real. The Norlane project happened. The compliance landscape is navigable. The finance structures exist. What this model requires is more upfront thinking than a standard residential purchase — but the payoff, both in cash flow and equity, is in a completely different category.</p>
+
+    <p>I've been working in this space for years across 50+ projects in Victoria. What I've seen consistently is that the investors who do well aren't necessarily the ones with the most capital or the most experience. They're the ones who took the time to actually understand the model before they committed — and then found the right team around them to execute it properly.</p>
+
+    <div class="pull-quote">
+      <p>"The investors who get this right aren't the smartest in the room. They're the ones who did the work before they signed anything."</p>
+    </div>
+
+    <h2 class="chapter-h2">If you want to go deeper</h2>
+
+    <p>I share content on rooming house investment, deal analysis, and property strategy regularly on Instagram. It's the best place to follow what I'm working on, see real project content, and ask questions directly.</p>
+
+    <p>If you're a serious investor and you want to sit down and map out whether this model makes sense for your specific situation — budget, goals, existing portfolio — I offer 1-on-1 strategy sessions for people who are genuinely ready to explore it.</p>
+
+    <div class="callout">
+      <div class="callout-label">Get in touch</div>
+      <p>DM me on Instagram @cashflow.dylan. Tell me a bit about where you're at and what you're trying to build. No hard sell, no pressure — just an honest conversation about whether this model fits your situation.</p>
+    </div>
+
+    <ul class="checklist">
+      <li>Follow @cashflow.dylan on Instagram for ongoing deal content and education</li>
+      <li>Send a DM to enquire about a 1-on-1 strategy session</li>
+      <li>Share this guide with any investor you think would benefit from it</li>
+    </ul>
+
+    <div class="disclaimer">
+      <p>The content in this guide is for general educational purposes only and does not constitute financial, legal, or investment advice. All figures referenced are based on specific completed projects and past performance does not guarantee future results. Individual outcomes depend on location, market conditions, finance structure, and numerous other variables. Always seek advice from a licensed financial adviser, accountant, and solicitor before making investment decisions.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflow.dylan on Instagram</span>
+      <span class="page-num">9</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PAGE 10 — BACK COVER                              -->
+<!-- ══════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="cta-page">
+    <div class="cta-eyebrow">Ready to go further?</div>
+    <h2>Let's map out<br/>your strategy.</h2>
+    <p>If you're a serious investor who wants to understand whether rooming house investment fits your situation, DM me directly. I'll be straight with you about whether it's the right fit.</p>
+    <div class="cta-url">@cashflow.dylan</div>
+    <div class="cta-divider"></div>
+    <div class="cta-contact">No hard sell · No pressure · Just a real conversation</div>
+    <div class="cta-wordmark">Dylan Adams · Rooming House Investor · Victoria</div>
+  </div>
+</div>
+
+</body>
+</html>
