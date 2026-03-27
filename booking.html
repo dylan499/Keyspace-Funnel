@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Book Your Strategy Call — Keyspace Property</title>
+  <link rel="icon" href="brand_assets copy/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:  #1a1a1a;
+      --white:  #ffffff;
+      --bg:     #f5f5f5;
+      --border: #e0e0e0;
+      --text:   #444444;
+      --muted:  #888888;
+      --radius: 4px;
+      --font-h: 'League Spartan', Arial, sans-serif;
+      --font-b: Arial, Helvetica, sans-serif;
+    }
+
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+    /* ── Animations ─────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .site-header    { animation: fadeIn .4s ease both; }
+    .steps-bar      { animation: fadeIn .5s ease .1s both; }
+    .confirm-banner { animation: fadeUp .6s cubic-bezier(0.16,1,0.3,1) .15s both; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-stagger > * {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal-stagger.visible > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0s; }
+    .reveal-stagger.visible > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:.08s; }
+    .reveal-stagger.visible > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:.16s; }
+    .reveal-stagger.visible > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:.24s; }
+
+    body {
+      font-family: var(--font-b);
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    img { max-width: 100%; display: block; }
+
+    .wrap {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ── Header ─────────────────────────────────── */
+    .site-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+      text-align: center;
+    }
+
+    .site-header img {
+      height: 22px;
+      margin: 0 auto;
+    }
+
+    /* ── Progress Steps ─────────────────────────── */
+    .steps-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+    }
+
+    .steps-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .step-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .step-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-h);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .step-circle.done  { background: var(--black); color: var(--white); }
+    .step-circle.active { background: var(--black); color: var(--white); }
+    .step-circle.idle  { background: var(--border); color: var(--muted); }
+
+    .step-node-label {
+      font-family: var(--font-h);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .step-node-label.done   { color: var(--black); }
+    .step-node-label.active { color: var(--black); }
+    .step-node-label.idle   { color: var(--muted); }
+
+    .step-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      margin: 0 6px;
+      margin-bottom: 18px;
+    }
+
+    .step-line.done { background: var(--black); }
+
+    /* ── Confirmation Banner ────────────────────── */
+    .confirm-banner {
+      background: var(--black);
+      padding: 40px 20px 36px;
+      text-align: center;
+    }
+
+    .confirm-icon {
+      font-size: 36px;
+      margin-bottom: 14px;
+    }
+
+    .confirm-banner h1 {
+      font-family: var(--font-h);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .confirm-banner p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      max-width: 340px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+
+    /* ── What Happens Next ──────────────────────── */
+    .next-section {
+      padding: 36px 0;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-family: var(--font-h);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .section-h2 {
+      font-family: var(--font-h);
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--black);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .next-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .next-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .next-item:last-child { border-bottom: none; }
+
+    .next-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .next-content h4 {
+      font-family: var(--font-h);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 2px;
+    }
+
+    .next-content p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── Calendly ───────────────────────────────── */
+    .cal-section {
+      padding: 36px 0 48px;
+      background: var(--bg);
+    }
+
+    .cal-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    }
+
+    .cal-header {
+      background: var(--black);
+      padding: 20px 24px;
+    }
+
+    .cal-header h3 {
+      font-family: var(--font-h);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .cal-header p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .cal-body {
+      min-height: 580px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 36px 24px;
+      text-align: center;
+      gap: 16px;
+    }
+
+    .cal-body-icon { font-size: 36px; }
+
+    .cal-body h4 {
+      font-family: var(--font-h);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    .cal-body p {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 300px;
+      line-height: 1.55;
+    }
+
+    .cal-note {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      font-size: 12px;
+      color: var(--muted);
+      max-width: 340px;
+      line-height: 1.55;
+      text-align: left;
+    }
+
+    .cal-note code {
+      font-family: monospace;
+      font-size: 11px;
+      background: var(--border);
+      padding: 1px 5px;
+      border-radius: 3px;
+      color: var(--black);
+    }
+
+    /* ── Call Details ───────────────────────────── */
+    .details-section {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 36px 0;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .detail-card {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .detail-icon { font-size: 18px; flex-shrink: 0; }
+
+    .detail-card h5 {
+      font-family: var(--font-h);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 2px;
+    }
+
+    .detail-card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ── Guarantee ──────────────────────────────── */
+    .guarantee-section {
+      background: var(--black);
+      padding: 32px 20px;
+      text-align: center;
+    }
+
+    .guarantee-section .g-icon { font-size: 28px; margin-bottom: 10px; }
+
+    .guarantee-section h4 {
+      font-family: var(--font-h);
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .guarantee-section p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      max-width: 320px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+
+    /* ── Trust Strip ────────────────────────────── */
+    .trust-strip {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 20px;
+    }
+
+    .trust-inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-h);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--black);
+    }
+
+    /* ── Footer ─────────────────────────────────── */
+    footer {
+      background: #111;
+      padding: 28px 20px;
+      text-align: center;
+    }
+
+    footer img {
+      height: 18px;
+      filter: invert(1) brightness(0.6);
+      margin: 0 auto 14px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      text-decoration: none;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <img src="brand_assets copy/Uppercase Keyspace Property Logo, Spacious Design.png" alt="Keyspace Property" />
+  </header>
+
+  <!-- Progress Steps -->
+  <div class="steps-bar">
+    <div class="steps-inner">
+      <div class="step-node">
+        <div class="step-circle done">✓</div>
+        <span class="step-node-label done">Details</span>
+      </div>
+      <div class="step-line done"></div>
+      <div class="step-node">
+        <div class="step-circle active">2</div>
+        <span class="step-node-label active">Book Call</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-node">
+        <div class="step-circle idle">3</div>
+        <span class="step-node-label idle">Confirmed</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Banner -->
+  <div class="confirm-banner">
+    <div class="confirm-icon">🎉</div>
+    <h1>Blueprint on its way, <span id="name-display">Investor</span>!</h1>
+    <p>Now book your free 30-minute strategy call and let's map out your exact investment path.</p>
+  </div>
+
+  <!-- What Happens Next -->
+  <section class="next-section">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="section-label">What Happens Next</div>
+        <h2 class="section-h2">On your call, we'll cover</h2>
+      </div>
+      <div class="next-list reveal-stagger">
+        <div class="next-item">
+          <div class="next-icon">🎯</div>
+          <div class="next-content">
+            <h4>Your personal investment roadmap</h4>
+            <p>We'll assess your position and show you the most direct path to ownership.</p>
+          </div>
+        </div>
+        <div class="next-item">
+          <div class="next-icon">🏘️</div>
+          <div class="next-content">
+            <h4>Live project opportunities</h4>
+            <p>Get access to current sites before they're presented to the wider market.</p>
+          </div>
+        </div>
+        <div class="next-item">
+          <div class="next-icon">💰</div>
+          <div class="next-content">
+            <h4>Finance strategy tailored to you</h4>
+            <p>Understand how to structure your deal to maximise yield and protect equity.</p>
+          </div>
+        </div>
+        <div class="next-item">
+          <div class="next-icon">💬</div>
+          <div class="next-content">
+            <h4>All your questions answered</h4>
+            <p>Ask anything — yields, timelines, compliance, management. No jargon.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calendly Embed -->
+  <section class="cal-section">
+    <div class="wrap">
+      <div class="cal-card reveal">
+        <div class="cal-header">
+          <h3>Book Your Free Strategy Call</h3>
+          <p>30 minutes · Phone or video · No obligation</p>
+        </div>
+
+        <iframe src="https://app.keyspaceproperty.com.au/widget/booking/1sGknzKjcAVuYiOAJCBw" style="width:100%;height:700px;border:none;overflow:hidden;display:block;" scrolling="no" id="1sGknzKjcAVuYiOAJCBw_1774594215166"></iframe>
+        <script src="https://app.keyspaceproperty.com.au/js/form_embed.js" type="text/javascript"></script>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Call Details -->
+  <section class="details-section">
+    <div class="wrap">
+      <div class="details-grid reveal-stagger">
+        <div class="detail-card">
+          <div class="detail-icon">📞</div>
+          <div>
+            <h5>Format</h5>
+            <p>Phone or video — your choice</p>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-icon">⏱️</div>
+          <div>
+            <h5>Duration</h5>
+            <p>30 minutes</p>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-icon">💵</div>
+          <div>
+            <h5>Cost</h5>
+            <p>Completely free</p>
+          </div>
+        </div>
+        <div class="detail-card">
+          <div class="detail-icon">👤</div>
+          <div>
+            <h5>With</h5>
+            <p>Senior Keyspace advisor</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zero Pressure Guarantee -->
+  <div class="guarantee-section">
+    <div class="g-icon">🛡️</div>
+    <h4>Zero Pressure Guarantee</h4>
+    <p>No pitch. No close. No pressure. Just honest advice on what's possible for your situation.</p>
+  </div>
+
+  <!-- Trust Strip -->
+  <div class="trust-strip">
+    <div class="trust-inner">
+      <div class="trust-item">🔒 Secure &amp; private</div>
+      <div class="trust-item">⚡ Instant confirmation</div>
+      <div class="trust-item">🚫 Cancel anytime</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <img src="brand_assets copy/Uppercase Keyspace Property Logo, Spacious Design.png" alt="Keyspace Property" />
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms</a>
+      <a href="index.html">← Back</a>
+    </div>
+    <p class="footer-copy">© 2025 Keyspace Property Group. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Personalised greeting
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    if (name) document.getElementById('name-display').textContent = name + '!';
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => observer.observe(el));
+
+    // ── Detect GHL booking completion and redirect to confirmation ──
+    window.addEventListener('message', function(event) {
+      // Log all messages in console so you can inspect what GHL sends
+      console.log('postMessage received:', event.data);
+
+      const data = event.data;
+
+      // GHL sends various event types — catch the booking confirmed ones
+      if (
+        (typeof data === 'string' && (
+          data.includes('booking') ||
+          data.includes('confirmed') ||
+          data.includes('appointment') ||
+          data.includes('success')
+        )) ||
+        (typeof data === 'object' && data !== null && (
+          data.event === 'booking_confirmed' ||
+          data.event === 'appointment_booked' ||
+          data.type  === 'booking_confirmed' ||
+          data.type  === 'appointment_booked' ||
+          data.status === 'confirmed' ||
+          data.action === 'booking'
+        ))
+      ) {
+        const dest = 'confirmation.html' + (name ? '?name=' + encodeURIComponent(name) : '');
+        window.location.href = dest;
+      }
+    });
+  </script>
+
+</body>
+</html>
