@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Contract Brokering Blueprint — @cashflowdylan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #1a1a1a;
+      --white:   #ffffff;
+      --offwhite:#fafafa;
+      --bg:      #f5f5f5;
+      --border:  #e0e0e0;
+      --text:    #333333;
+      --muted:   #777777;
+      --font-h:  'League Spartan', Arial, sans-serif;
+      --font-b:  'Merriweather', Georgia, serif;
+      --font-ui: Arial, Helvetica, sans-serif;
+    }
+
+    html { -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font-b);
+      font-size: 10pt;
+      line-height: 1.75;
+      color: var(--text);
+      background: #d0d0d0;
+    }
+
+    img { max-width: 100%; display: block; }
+
+    .wordmark {
+      font-family: var(--font-h);
+      font-size: 9pt;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .wordmark-light { color: rgba(255,255,255,0.65); }
+    .wordmark-dark  { color: var(--black); }
+
+    .download-bar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--black);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 100;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+    }
+    .download-bar span {
+      font-family: var(--font-h);
+      font-size: 13px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+    }
+    .btn-download {
+      background: var(--white);
+      color: var(--black);
+      font-family: var(--font-h);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 4px;
+      padding: 12px 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.15s ease;
+    }
+    .btn-download:hover { opacity: 0.85; }
+    .btn-download svg { width: 16px; height: 16px; }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      background: var(--white);
+      margin: 20px auto;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+    }
+
+    .cover {
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      height: 297mm;
+    }
+    .cover-top {
+      padding: 14mm 16mm 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cover-tag {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    .cover-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 16mm 14mm;
+    }
+    .cover-eyebrow {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 10mm;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .cover-eyebrow::before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1.5px;
+      background: rgba(255,255,255,0.4);
+    }
+    .cover-title {
+      font-family: var(--font-h);
+      font-size: 38pt;
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 8mm;
+    }
+    .cover-title em {
+      font-style: normal;
+      color: rgba(255,255,255,0.3);
+    }
+    .cover-sub {
+      font-family: var(--font-ui);
+      font-size: 10pt;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      max-width: 120mm;
+      margin-bottom: 14mm;
+    }
+    .cover-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin-bottom: 8mm;
+    }
+    .cover-meta { display: flex; gap: 12mm; }
+    .cover-meta-item .label {
+      font-family: var(--font-h);
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 1mm;
+    }
+    .cover-meta-item .value {
+      font-family: var(--font-h);
+      font-size: 10pt;
+      font-weight: 700;
+      color: rgba(255,255,255,0.75);
+    }
+
+    .page-inner {
+      padding: 16mm 16mm 20mm;
+      min-height: 297mm;
+      display: flex;
+      flex-direction: column;
+    }
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 5mm;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 10mm;
+    }
+    .page-header-right {
+      font-family: var(--font-h);
+      font-size: 7pt;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .page-footer {
+      margin-top: auto;
+      padding-top: 5mm;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-footer-text {
+      font-family: var(--font-ui);
+      font-size: 7pt;
+      color: var(--muted);
+    }
+    .page-num {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .chapter-label {
+      font-family: var(--font-h);
+      font-size: 7.5pt;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3mm;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chapter-label::before {
+      content: '';
+      display: block;
+      width: 14px;
+      height: 1.5px;
+      background: var(--muted);
+    }
+
+    .chapter-h1 {
+      font-family: var(--font-h);
+      font-size: 24pt;
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      color: var(--black);
+      margin-bottom: 7mm;
+    }
+    .chapter-h2 {
+      font-family: var(--font-h);
+      font-size: 14pt;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+      color: var(--black);
+      margin-bottom: 4mm;
+      margin-top: 7mm;
+    }
+
+    p { margin-bottom: 4mm; font-size: 9.5pt; line-height: 1.75; }
+    p:last-child { margin-bottom: 0; }
+
+    .lead {
+      font-size: 11pt;
+      line-height: 1.65;
+      color: var(--text);
+      margin-bottom: 7mm;
+      font-weight: 300;
+    }
+
+    .callout {
+      background: var(--black);
+      border-radius: 4px;
+      padding: 6mm 7mm;
+      margin: 6mm 0;
+    }
+    .callout p {
+      font-family: var(--font-h);
+      font-size: 10pt;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.5;
+      margin: 0;
+    }
+    .callout-label {
+      font-family: var(--font-h);
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 2mm;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4mm;
+      margin: 6mm 0;
+    }
+    .stat-box {
+      background: var(--bg);
+      border-radius: 4px;
+      padding: 5mm;
+      text-align: center;
+    }
+    .stat-box .num {
+      font-family: var(--font-h);
+      font-size: 22pt;
+      font-weight: 900;
+      color: var(--black);
+      line-height: 1;
+      margin-bottom: 1mm;
+    }
+    .stat-box .lbl {
+      font-family: var(--font-ui);
+      font-size: 7.5pt;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6mm 0;
+      font-size: 8.5pt;
+    }
+    .compare-table th {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3mm 4mm;
+      text-align: left;
+      border-bottom: 2px solid var(--black);
+      color: var(--black);
+    }
+    .compare-table th.highlight { background: var(--black); color: var(--white); }
+    .compare-table td {
+      padding: 3mm 4mm;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-ui);
+      color: var(--text);
+      vertical-align: top;
+    }
+    .compare-table td.highlight {
+      background: var(--bg);
+      font-weight: 700;
+      font-family: var(--font-h);
+      color: var(--black);
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5mm;
+      margin: 5mm 0;
+    }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 3mm;
+      font-family: var(--font-ui);
+      font-size: 9pt;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .checklist li::before {
+      content: '✓';
+      font-family: var(--font-h);
+      font-size: 9pt;
+      font-weight: 800;
+      color: var(--black);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .numlist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4mm;
+      margin: 5mm 0;
+    }
+    .numlist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 4mm;
+    }
+    .numlist-num {
+      width: 22px;
+      height: 22px;
+      background: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 800;
+      color: var(--white);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .numlist-text {
+      font-family: var(--font-ui);
+      font-size: 9pt;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .numlist-text strong {
+      font-family: var(--font-h);
+      font-weight: 700;
+      color: var(--black);
+      display: block;
+      margin-bottom: 1px;
+    }
+
+    .pull-quote {
+      border-left: 3px solid var(--black);
+      padding: 3mm 0 3mm 6mm;
+      margin: 7mm 0;
+    }
+    .pull-quote p {
+      font-family: var(--font-h);
+      font-size: 12pt;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.3;
+      font-style: normal;
+      margin: 0;
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5mm;
+      margin: 5mm 0;
+    }
+    .info-box {
+      background: var(--bg);
+      border-radius: 4px;
+      padding: 5mm;
+    }
+    .info-box h4 {
+      font-family: var(--font-h);
+      font-size: 9pt;
+      font-weight: 800;
+      color: var(--black);
+      margin-bottom: 2mm;
+    }
+    .info-box p {
+      font-family: var(--font-ui);
+      font-size: 8.5pt;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Deal flow diagram */
+    .deal-flow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      margin: 8mm 0;
+    }
+    .deal-node {
+      flex: 1;
+      text-align: center;
+      background: var(--bg);
+      padding: 5mm 3mm;
+      border-radius: 4px;
+    }
+    .deal-node.you {
+      background: var(--black);
+    }
+    .deal-node-label {
+      font-family: var(--font-h);
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1mm;
+    }
+    .deal-node.you .deal-node-label { color: rgba(255,255,255,0.4); }
+    .deal-node-name {
+      font-family: var(--font-h);
+      font-size: 10pt;
+      font-weight: 900;
+      color: var(--black);
+      line-height: 1.1;
+    }
+    .deal-node.you .deal-node-name { color: var(--white); }
+    .deal-node-sub {
+      font-family: var(--font-ui);
+      font-size: 7.5pt;
+      color: var(--muted);
+      margin-top: 1mm;
+    }
+    .deal-node.you .deal-node-sub { color: rgba(255,255,255,0.5); }
+    .deal-arrow {
+      font-family: var(--font-h);
+      font-size: 14pt;
+      font-weight: 900;
+      color: var(--muted);
+      padding: 0 3mm;
+      flex-shrink: 0;
+    }
+
+    .cta-page {
+      background: var(--black);
+      height: 297mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 16mm;
+    }
+    .cta-page .cta-eyebrow {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 8mm;
+    }
+    .cta-page h2 {
+      font-family: var(--font-h);
+      font-size: 30pt;
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      margin-bottom: 6mm;
+    }
+    .cta-page p {
+      font-family: var(--font-ui);
+      font-size: 10pt;
+      color: rgba(255,255,255,0.55);
+      max-width: 120mm;
+      line-height: 1.65;
+      margin-bottom: 10mm;
+    }
+    .cta-url {
+      font-family: var(--font-h);
+      font-size: 13pt;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 0.02em;
+      border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: 4px;
+      padding: 4mm 10mm;
+      margin-bottom: 12mm;
+    }
+    .cta-divider {
+      width: 40mm;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+      margin: 0 auto 10mm;
+    }
+    .cta-contact {
+      font-family: var(--font-h);
+      font-size: 8pt;
+      font-weight: 600;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.06em;
+    }
+    .cta-wordmark {
+      font-family: var(--font-h);
+      font-size: 10pt;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-top: 16mm;
+    }
+
+    .disclaimer {
+      background: var(--bg);
+      border-radius: 4px;
+      padding: 4mm 5mm;
+      margin-top: 6mm;
+    }
+    .disclaimer p {
+      font-family: var(--font-ui);
+      font-size: 7pt;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    @media print {
+      body { background: white; }
+      .download-bar { display: none !important; }
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0;
+        box-shadow: none;
+        page-break-after: always;
+      }
+      .page:last-child { page-break-after: auto; }
+      @page { size: A4; margin: 0; }
+    }
+
+    @media screen and (max-width: 800px) {
+      body { background: #e0e0e0; }
+      .page { width: 100%; min-height: auto; margin: 0 0 12px; box-shadow: none; }
+      .cover { height: auto; min-height: 100vw; }
+      .page-inner { padding: 10mm; min-height: auto; }
+      .cta-page { height: auto; padding: 12mm; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+      .info-row { grid-template-columns: 1fr; }
+      .download-bar { position: fixed; }
+      .compare-table { font-size: 7.5pt; }
+      .compare-table th, .compare-table td { padding: 2mm 3mm; }
+      .cover-top { flex-direction: column; align-items: flex-start; gap: 2mm; }
+      .cover-tag { font-size: 7pt; }
+      .deal-flow { flex-direction: column; gap: 2mm; }
+      .deal-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- DOWNLOAD BAR -->
+<div class="download-bar">
+  <span>Your free blueprint is ready</span>
+  <button class="btn-download" onclick="window.print()">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 2v9M4 7l4 4 4-4"/>
+      <path d="M2 13h12"/>
+    </svg>
+    Save as PDF
+  </button>
+</div>
+
+<!-- PAGE 1 — COVER -->
+<div class="page">
+  <div class="cover">
+    <div class="cover-top">
+      <span class="wordmark wordmark-light">@cashflowdylan</span>
+      <span class="cover-tag">Business Blueprint · 2025 Edition</span>
+    </div>
+    <div class="cover-body">
+      <div class="cover-eyebrow">The Exact Method</div>
+      <div class="cover-title">
+        The Contract<br/>Brokering<br/><em>Blueprint.</em>
+      </div>
+      <p class="cover-sub">
+        How to make money as the middleman — brokering contracts across any industry, with no capital, no qualifications, and no ceiling on what you can earn.
+      </p>
+      <div class="cover-divider"></div>
+      <div class="cover-meta">
+        <div class="cover-meta-item">
+          <div class="label">Written by</div>
+          <div class="value">Dylan</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="label">Works in</div>
+          <div class="value">Any Industry</div>
+        </div>
+        <div class="cover-meta-item">
+          <div class="label">Capital Required</div>
+          <div class="value">$0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 — INTRODUCTION -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflowdylan</span>
+      <span class="page-header-right">The Contract Brokering Blueprint</span>
+    </div>
+
+    <div class="chapter-label">Introduction</div>
+    <h1 class="chapter-h1">Most people think you<br/>need money to make<br/>money. You don't.</h1>
+
+    <p class="lead">I've brokered contracts across multiple industries and made serious money doing it. I don't always own what I'm selling. I don't always have the capital to fund what I'm arranging. What I have is the knowledge of how to sit in the middle — and that's enough.</p>
+
+    <p>The model is simple. Find a supplier. Get their price. Find a buyer. Charge more. Keep the difference. That gap between what a supplier charges and what a buyer will pay is where the money lives — and it exists in every industry, at every price point, all the time.</p>
+
+    <p>I've done this in real estate, brokering property contracts at $70,000+ profit per deal. I've seen the same model work in cleaning services, labour supply, logistics, government contracts, military supply, construction — you name it. The industry changes. The model doesn't.</p>
+
+    <div class="callout">
+      <div class="callout-label">Who this guide is for</div>
+      <p>This is for anyone who wants to build a business that generates real income without needing startup capital, a warehouse, staff, or a product of their own. If you're willing to learn how to find suppliers, find buyers, and connect them — this model works.</p>
+    </div>
+
+    <h2 class="chapter-h2">What you'll learn in this blueprint</h2>
+
+    <ul class="checklist">
+      <li>Exactly how the contract brokering model works — the full picture</li>
+      <li>The numbers at different deal sizes, from small to high ticket</li>
+      <li>How to find suppliers and lock in a supply price</li>
+      <li>How to find buyers who need what your supplier is offering</li>
+      <li>How to structure the deal so you get paid every time</li>
+      <li>How deal cycles work — and why smaller deals are a great starting point</li>
+      <li>What to do in your first week to land your first deal</li>
+    </ul>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflowdylan on Instagram</span>
+      <span class="page-num">2</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 — CHAPTER 1: THE MODEL -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflowdylan</span>
+      <span class="page-header-right">Chapter 1 — The Model</span>
+    </div>
+
+    <div class="chapter-label">Chapter 01</div>
+    <h1 class="chapter-h1">The middleman<br/>model, explained.</h1>
+
+    <p class="lead">You find someone who has something to sell. You find someone who wants to buy it. You charge more than the supplier charges you. The difference is yours.</p>
+
+    <p>That's it. That's the whole model. Everything else in this guide is just the mechanics of making that happen consistently and at scale.</p>
+
+    <p>What makes this work is something most people overlook: buyers and suppliers rarely find each other efficiently on their own. Suppliers are great at delivering — not always at selling. Buyers are clear on what they need — not always on where to find it. You solve both problems simultaneously, and you get paid for doing it.</p>
+
+    <div class="deal-flow">
+      <div class="deal-node">
+        <div class="deal-node-label">Step 1</div>
+        <div class="deal-node-name">Supplier</div>
+        <div class="deal-node-sub">Quotes you their price</div>
+      </div>
+      <div class="deal-arrow">→</div>
+      <div class="deal-node you">
+        <div class="deal-node-label">You</div>
+        <div class="deal-node-name">Broker</div>
+        <div class="deal-node-sub">Add your margin</div>
+      </div>
+      <div class="deal-arrow">→</div>
+      <div class="deal-node">
+        <div class="deal-node-label">Step 3</div>
+        <div class="deal-node-name">Buyer</div>
+        <div class="deal-node-sub">Pays your price</div>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      <p>"You don't need to own it, build it, or fund it. You just need to know where it is and who wants it."</p>
+    </div>
+
+    <h2 class="chapter-h2">Why this model works in any industry</h2>
+
+    <ul class="numlist">
+      <li>
+        <div class="numlist-num">1</div>
+        <div class="numlist-text"><strong>Information asymmetry exists everywhere</strong>Suppliers don't always know who their best buyers are. Buyers don't always know who the best suppliers are. That gap is your business. It exists in construction, services, government procurement, logistics, real estate — every market.</div>
+      </li>
+      <li>
+        <div class="numlist-num">2</div>
+        <div class="numlist-text"><strong>No capital required to start</strong>You're not buying stock. You're not funding construction. You're not holding inventory. You're facilitating a transaction and collecting a margin. Your investment is time and knowledge — both of which you already have access to.</div>
+      </li>
+      <li>
+        <div class="numlist-num">3</div>
+        <div class="numlist-text"><strong>The ceiling scales with the deals you chase</strong>A cleaning contract might make you $500. A construction contract might make you $70,000. The model is identical. The only variable is the size of the deal you're willing to pursue.</div>
+      </li>
+    </ul>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflowdylan on Instagram</span>
+      <span class="page-num">3</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 — CHAPTER 2: THE NUMBERS -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflowdylan</span>
+      <span class="page-header-right">Chapter 2 — The Numbers</span>
+    </div>
+
+    <div class="chapter-label">Chapter 02</div>
+    <h1 class="chapter-h1">What the numbers<br/>actually look like.</h1>
+
+    <p class="lead">The model works at every price point. Here's what it looks like across two very different deal types — a small service contract and a high-ticket property deal.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Deal Element</th>
+          <th>Small Deal Example</th>
+          <th class="highlight">High Ticket Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Industry</td>
+          <td>Commercial Cleaning</td>
+          <td class="highlight">Real Estate</td>
+        </tr>
+        <tr>
+          <td>Supplier Quote (their price to you)</td>
+          <td>$8,000</td>
+          <td class="highlight">$710,000</td>
+        </tr>
+        <tr>
+          <td>Your Price (what buyer pays)</td>
+          <td>$11,500</td>
+          <td class="highlight">$780,000</td>
+        </tr>
+        <tr>
+          <td>Your Margin</td>
+          <td>$3,500</td>
+          <td class="highlight">$70,000</td>
+        </tr>
+        <tr>
+          <td>Typical Deal Cycle</td>
+          <td>Days to 2 weeks</td>
+          <td class="highlight">Weeks to months</td>
+        </tr>
+        <tr>
+          <td>Capital Required</td>
+          <td>$0</td>
+          <td class="highlight">$0</td>
+        </tr>
+        <tr>
+          <td>Repeat Business Potential</td>
+          <td>High (ongoing contracts)</td>
+          <td class="highlight">Medium (per project)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <div class="callout-label">The key insight</div>
+      <p>Small deals close faster and build your confidence. High ticket deals make the same time investment worth dramatically more. Most people start small, get one win, and then start looking at bigger contracts. Both are valid — and both use the exact same model.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="num">$0</div>
+        <div class="lbl">Capital required to broker a contract in any industry</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">$70k</div>
+        <div class="lbl">Margin on a single real estate contract deal</div>
+      </div>
+      <div class="stat-box">
+        <div class="num">Any</div>
+        <div class="lbl">Industry where buyers and suppliers exist — which is all of them</div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <p>Examples are for illustrative purposes. Individual results depend on industry, deal size, negotiation, and execution. This is not financial advice. Results vary.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflowdylan on Instagram</span>
+      <span class="page-num">4</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5 — CHAPTER 3: FINDING SUPPLIERS -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflowdylan</span>
+      <span class="page-header-right">Chapter 3 — Finding Suppliers</span>
+    </div>
+
+    <div class="chapter-label">Chapter 03</div>
+    <h1 class="chapter-h1">Finding suppliers<br/>who want brokers.</h1>
+
+    <p class="lead">Not every supplier will work with a broker. The ones who will are the ones who are good at delivering but struggle with sales and lead generation. That's most of them.</p>
+
+    <p>The conversation with a supplier is straightforward: you tell them you have access to buyers and you'd like to offer their service at a margin. You ask for their best price, agree that the buyer never needs to know the split, and move forward when a deal comes together. Most suppliers — particularly in services and construction — are happy to work this way because it means new business they didn't have to find themselves.</p>
+
+    <h2 class="chapter-h2">Where to find suppliers</h2>
+
+    <ul class="numlist">
+      <li>
+        <div class="numlist-num">1</div>
+        <div class="numlist-text"><strong>Trade directories and industry portals</strong>Most industries have directories of registered suppliers. Construction, cleaning, logistics, staffing — they all have platforms where businesses list themselves. These are warm leads: they want work.</div>
+      </li>
+      <li>
+        <div class="numlist-num">2</div>
+        <div class="numlist-text"><strong>LinkedIn and direct outreach</strong>Search for businesses in your target industry, identify decision-makers, and reach out directly. A simple message explaining you broker contracts and are looking for reliable supply partners gets responses more often than you'd expect.</div>
+      </li>
+      <li>
+        <div class="numlist-num">3</div>
+        <div class="numlist-text"><strong>Word of mouth and referrals</strong>Once you've done one deal, your supplier network grows. Every supplier knows other suppliers. Referrals are the fastest way to build a reliable supply side once you're moving.</div>
+      </li>
+      <li>
+        <div class="numlist-num">4</div>
+        <div class="numlist-text"><strong>Industries you already know</strong>The easiest place to start is an industry where you already have contacts or knowledge. You understand the pricing, you know the players, and you can spot a good deal faster than an outsider.</div>
+      </li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-label">What to ask a supplier</div>
+      <p>"I work with buyers who need [service/product]. What's your best price if I bring you a confirmed deal? I handle the client relationship — I just need your number so I know what I'm working with."</p>
+    </div>
+
+    <h2 class="chapter-h2">What makes a good supplier relationship</h2>
+
+    <ul class="checklist">
+      <li>They deliver consistently — your reputation is on the line, not just theirs</li>
+      <li>They're open to broker arrangements and won't cut you out of the deal</li>
+      <li>Their pricing leaves enough room for your margin and still competitive for the buyer</li>
+      <li>They're responsive — slow suppliers kill deals</li>
+      <li>They have capacity — no point selling work a supplier can't fulfil</li>
+    </ul>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflowdylan on Instagram</span>
+      <span class="page-num">5</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6 — CHAPTER 4: FINDING BUYERS -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflowdylan</span>
+      <span class="page-header-right">Chapter 4 — Finding Buyers</span>
+    </div>
+
+    <div class="chapter-label">Chapter 04</div>
+    <h1 class="chapter-h1">Finding buyers<br/>who are ready to go.</h1>
+
+    <p class="lead">A buyer is anyone with a need and a budget. Your job is to find them before they find a supplier on their own.</p>
+
+    <p>The buyer side of the equation is where most new brokers overthink things. You don't need a massive audience or an established brand. You need to be in front of people who have a problem your supplier solves — and that's a targeting exercise, not a popularity contest.</p>
+
+    <h2 class="chapter-h2">Where buyers are already looking</h2>
+
+    <div class="info-row">
+      <div class="info-box">
+        <h4>Government Tender Portals</h4>
+        <p>Government agencies at federal, state, and local level publish contracts they need filled. AusTender, BuyNSW, VendorPanel — these are live buyer needs with budgets attached.</p>
+      </div>
+      <div class="info-box">
+        <h4>Business Networks & LinkedIn</h4>
+        <p>Businesses regularly post about operational needs. Industry groups, LinkedIn posts, and direct outreach to operations managers can surface buyers faster than most people expect.</p>
+      </div>
+      <div class="info-box">
+        <h4>Your Existing Network</h4>
+        <p>Most people know at least one business owner or decision-maker who needs something sourced. Your first deal is almost always closer than you think.</p>
+      </div>
+      <div class="info-box">
+        <h4>Industry-Specific Platforms</h4>
+        <p>Real estate portals, construction tender boards, freight exchanges, staffing platforms — every industry has a marketplace. Learn where buyers congregate in your target sector.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      <p>"Your first buyer is probably someone you already know. Your second comes from the first deal going well."</p>
+    </div>
+
+    <h2 class="chapter-h2">How to approach a buyer</h2>
+
+    <p>Keep it simple. You're not pitching a business — you're solving a problem they already have. Lead with the outcome, not the process.</p>
+
+    <ul class="checklist">
+      <li>Identify their need before you reach out — don't pitch blind</li>
+      <li>Lead with what you can deliver and at what price — not how you source it</li>
+      <li>The buyer doesn't need to know your supplier arrangement — only that you can deliver</li>
+      <li>Get a clear scope before going back to your supplier for a final quote</li>
+      <li>Move quickly — buyers who are actively looking won't wait long</li>
+    </ul>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflowdylan on Instagram</span>
+      <span class="page-num">6</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7 — CHAPTER 5 & 6: STRUCTURING THE DEAL + DEAL CYCLES -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflowdylan</span>
+      <span class="page-header-right">Chapter 5 & 6 — Structuring Deals & Deal Cycles</span>
+    </div>
+
+    <div class="chapter-label">Chapter 05</div>
+    <h1 class="chapter-h1">Structuring the deal<br/>so you always get paid.</h1>
+
+    <p class="lead">The model only works long-term if you're protected. That means getting the basics of deal structure right from the start.</p>
+
+    <ul class="numlist">
+      <li>
+        <div class="numlist-num">1</div>
+        <div class="numlist-text"><strong>Get supplier pricing in writing</strong>Always confirm the supply price in writing before quoting a buyer. Verbal agreements change. If your supplier's price shifts after you've quoted the buyer, your margin disappears.</div>
+      </li>
+      <li>
+        <div class="numlist-num">2</div>
+        <div class="numlist-text"><strong>Use a simple brokering agreement</strong>A one-page agreement between you and your supplier confirming they won't contact your buyer directly is standard practice. It protects your position in the deal and is widely accepted across industries.</div>
+      </li>
+      <li>
+        <div class="numlist-num">3</div>
+        <div class="numlist-text"><strong>Invoice the buyer, pay the supplier</strong>You invoice the buyer at your price. Once payment clears, you pay the supplier their price. The difference is yours. Keep a clean paper trail for every transaction.</div>
+      </li>
+      <li>
+        <div class="numlist-num">4</div>
+        <div class="numlist-text"><strong>Clarify scope before committing</strong>The most common reason deals fall apart is scope creep — the buyer expects more than was agreed. Define deliverables clearly before the contract is signed.</div>
+      </li>
+    </ul>
+
+    <div class="chapter-label" style="margin-top: 8mm;">Chapter 06</div>
+    <h1 class="chapter-h1" style="font-size: 20pt;">Deal cycles — small<br/>vs high ticket.</h1>
+
+    <p>One of the questions I get most is whether to start with small deals or go straight for high ticket. My answer: start where your confidence is, but understand the trade-offs.</p>
+
+    <div class="info-row">
+      <div class="info-box">
+        <h4>Small Deals (days–2 weeks)</h4>
+        <p>Lower margin per deal but fast cycle times. Great for building confidence, refining your process, and generating cash flow quickly. Services, supplies, and small contracts typically sit here.</p>
+      </div>
+      <div class="info-box">
+        <h4>High Ticket (weeks–months)</h4>
+        <p>Larger margin but longer sales cycle and more complexity. One deal can generate more than months of small deals combined. Requires more relationship-building and negotiation skill.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">The smart approach</div>
+      <p>Do small deals to learn the model and build cash flow. Use the confidence and process you develop to pursue high ticket deals. Most successful brokers run both simultaneously — a pipeline of small deals that pays the bills while one or two large deals move slowly in the background.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflowdylan on Instagram</span>
+      <span class="page-num">7</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 8 — CHAPTER 7: YOUR FIRST DEAL -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflowdylan</span>
+      <span class="page-header-right">Chapter 7 — Your First Deal</span>
+    </div>
+
+    <div class="chapter-label">Chapter 07</div>
+    <h1 class="chapter-h1">What to do in<br/>week one.</h1>
+
+    <p class="lead">Most people read guides like this and do nothing. The ones who actually make money are the ones who take one concrete step before they feel ready. Here's exactly what that looks like.</p>
+
+    <ul class="numlist">
+      <li>
+        <div class="numlist-num">1</div>
+        <div class="numlist-text"><strong>Pick one industry to start in</strong>Don't try to broker across five industries at once. Pick one — ideally one you have some existing knowledge or contacts in — and go deep on it first. You can expand later.</div>
+      </li>
+      <li>
+        <div class="numlist-num">2</div>
+        <div class="numlist-text"><strong>Find three potential suppliers</strong>Identify three businesses in your chosen industry that could be supply partners. Research their services, check their reputation, and reach out to each with a simple introductory message about brokering arrangements.</div>
+      </li>
+      <li>
+        <div class="numlist-num">3</div>
+        <div class="numlist-text"><strong>Get at least one supply price</strong>From the responses you get, secure at least one confirmed supply price in writing. This is your cost base. Everything you sell above this number is your margin.</div>
+      </li>
+      <li>
+        <div class="numlist-num">4</div>
+        <div class="numlist-text"><strong>Find one active buyer need</strong>Check a government tender portal, post in a relevant LinkedIn group, or reach out to one person in your network who might need what your supplier offers. You're not looking for a perfect match — you're looking for a real need.</div>
+      </li>
+      <li>
+        <div class="numlist-num">5</div>
+        <div class="numlist-text"><strong>Make one introduction</strong>Connect the need to your supplier. Quote the buyer at your margin. If it closes, you've done your first deal. If it doesn't, you've learned more than any guide could teach you — and you do it again.</div>
+      </li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-label">The most important thing</div>
+      <p>Your first deal will not be perfect. You'll probably underprice your margin, overcomplicate the conversation, or lose a deal you should have won. Do it anyway. Every broker I know made those same mistakes on their first deal — and closed their second deal significantly better.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflowdylan on Instagram</span>
+      <span class="page-num">8</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 9 — WHAT TO DO NEXT -->
+<div class="page">
+  <div class="page-inner">
+    <div class="page-header">
+      <span class="wordmark wordmark-dark">@cashflowdylan</span>
+      <span class="page-header-right">What To Do Next</span>
+    </div>
+
+    <div class="chapter-label">Closing</div>
+    <h1 class="chapter-h1">What to do next.</h1>
+
+    <p class="lead">Contract brokering is one of the most accessible ways to build a real income that I've found. No capital. No product. No staff. Just the ability to connect the right people and charge for it.</p>
+
+    <p>The model works across every industry. It scales with the size of deals you're willing to pursue. And the skills you build — sourcing, negotiation, relationship management — compound over time into something that pays you well for a long time.</p>
+
+    <p>I share the real mechanics of this — deals I'm working on, how I find suppliers, how I approach buyers, how I structure contracts — on Instagram regularly. It's where I go deepest on this stuff, and it's free.</p>
+
+    <div class="pull-quote">
+      <p>"The gap between a supplier's price and what a buyer will pay exists in every industry. Your job is just to find it."</p>
+    </div>
+
+    <h2 class="chapter-h2">If you want to go further</h2>
+
+    <p>I run 1-on-1 strategy sessions for people who are serious about getting their first deal across the line. We map out your target industry, identify your first supplier approach, and build a plan specific to your situation and background.</p>
+
+    <p>If that's you, DM me on Instagram. Tell me what industry you're thinking about and where you're at. I'll be straight with you about whether I can help.</p>
+
+    <div class="callout">
+      <div class="callout-label">Get in touch</div>
+      <p>DM @cashflowdylan on Instagram. No pitch, no pressure — just a real conversation about whether this model fits where you're trying to go.</p>
+    </div>
+
+    <ul class="checklist">
+      <li>Follow @cashflowdylan on Instagram for ongoing deal content and education</li>
+      <li>DM to enquire about a 1-on-1 strategy session</li>
+      <li>Share this guide with anyone who wants to build income without capital</li>
+    </ul>
+
+    <div class="disclaimer">
+      <p>The content in this guide is for general educational and informational purposes only. It does not constitute financial, legal, or business advice. Individual results vary based on industry, effort, execution, and market conditions. Always seek appropriate professional advice before entering into contracts or business arrangements.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="page-footer-text">@cashflowdylan on Instagram</span>
+      <span class="page-num">9</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 10 — BACK COVER -->
+<div class="page">
+  <div class="cta-page">
+    <div class="cta-eyebrow">Ready to broker your first deal?</div>
+    <h2>Let's get you<br/>your first win.</h2>
+    <p>If you want to work through this together and build a plan specific to your situation, DM me. I'll tell you straight whether I think the model fits where you're at.</p>
+    <div class="cta-url">@cashflowdylan</div>
+    <div class="cta-divider"></div>
+    <div class="cta-contact">No hard sell · No pressure · Just a real conversation</div>
+    <div class="cta-wordmark">Dylan · Contract Broker · @cashflowdylan</div>
+  </div>
+</div>
+
+</body>
+</html>
